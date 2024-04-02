@@ -1,0 +1,88 @@
+# Update bump details accordingly. Use bump check to confirm.
+# bump: caddy-version /CADDY_VERSION="(.*)"/ https://github.com/caddyserver/caddy.git|semver:*
+CADDY_VERSION="2.7.6" # Specify a stable release
+export ZOPEN_STABLE_TAG="v${CADDY_VERSION}"
+export ZOPEN_STABLE_URL="https://github.com/caddyserver/caddy.git"
+export ZOPEN_STABLE_DEPS="wharf git comp_go"
+export ZOPEN_BUILD_LINE="STABLE"
+export ZOPEN_CATEGORIES="networking"
+export ZOPEN_NAME="caddy"
+
+export ZOPEN_COMP=GO
+export ZOPEN_CONFIGURE="zopen_config"
+export ZOPEN_CONFIGURE_MINIMAL=1
+export ZOPEN_MAKE="skip"
+export ZOPEN_INSTALL="zopen_install"
+export ZOPEN_CHECK="skip"
+export ZOPEN_CLEAN="zopen_clean"
+
+zopen_init()
+{
+  export CGO_ENABLED=0
+  export GOTMPDIR=$PWD/go-tmpdir
+  mkdir -p $PWD/go-tmpdir
+  export PATH=$PATH:$GOROOT/go-build-zos/bin
+  export GOBIN=$ZOPEN_INSTALL_DIR/bin
+  mkdir -p $ZOPEN_INSTALL_DIR/bin
+  unset CC CXX
+}
+
+zopen_config()
+{
+  cd .. && echo ""
+  git clone https://github.com/dgraph-io/badger.git badger_1.6.2
+  echo "Checking out dgraph-io/badger v1.6.2"
+  cd badger_1.6.2
+  git checkout tags/v1.6.2
+  git apply ../patches/badger_1-6-2.patch 
+
+  cd .. && echo ""
+  git clone https://github.com/dgraph-io/badger.git badger_2.2007.4
+  echo "Checking out dgraph-io/badger v2.2007.4"
+  cd badger_2.2007.4
+  git checkout tags/v2.2007.4
+  git apply ../patches/badger_2-2007-4.patch 
+
+  cd .. && echo ""
+  git clone https://github.com/golang/sys.git
+  echo "Checking out x/sys"
+
+  git clone https://github.com/smallstep/certificates.git
+  echo "Checking out smallstep/certificates"
+
+  cd caddy
+  git apply ../patches/caddy.patch
+
+  cd .. && echo ""
+  go work init caddy sys 
+  wharf ./caddy/cmd/caddy/...
+}
+
+zopen_install()
+{
+  cd caddy/cmd/caddy
+  go install
+}
+
+zopen_clean()
+{
+  rm -rf ../.wharf_cache ../go.work* ../wharf_port ../caddy ../badger_* ../sys
+}
+
+zopen_check_results()
+{
+  dir="$1"
+  pfx="$2"
+  chk="$1/$2_check.log"
+
+  # Echo the following information to gauge build health
+  echo "actualFailures:0"
+  echo "totalTests:1"
+  echo "expectedFailures:0"
+  echo "expectedTotalTests:1"
+}
+
+zopen_get_version()
+{
+  echo "$CADDY_VERSION"
+}

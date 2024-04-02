@@ -1,0 +1,20 @@
+diff --git a/y/file_dsync.go b/y/file_dsync.go
+index ea4d9ab..2e6cc13 100644
+--- a/y/file_dsync.go
++++ b/y/file_dsync.go
+@@ -1,4 +1,4 @@
+-// +build !dragonfly,!freebsd,!windows,!plan9
++// +build !dragonfly,!freebsd,!windows,!plan9,!zos
+ 
+ /*
+  * Copyright 2017 Dgraph Labs, Inc. and Contributors
+diff --git a/y/file_nodsync.go b/y/file_nodsync.go
+index 54a2184..648878c 100644
+--- a/y/file_nodsync.go
++++ b/y/file_nodsync.go
+@@ -1,4 +1,4 @@
+-// +build dragonfly freebsd windows plan9
++// +build dragonfly freebsd windows plan9 zos
+ 
+ /*
+  * Copyright 2017 Dgraph Labs, Inc. and Contributors

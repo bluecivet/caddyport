@@ -1,0 +1,11 @@
+diff --git a/go.mod b/go.mod
+index 41248b79..a082ced4 100644
+--- a/go.mod
++++ b/go.mod
+@@ -153,3 +153,6 @@ require (
+ 	gopkg.in/square/go-jose.v2 v2.6.0 // indirect
+ 	howett.net/plist v1.0.0 // indirect
+ )
++
++replace github.com/dgraph-io/badger v1.6.2 => ../badger_1.6.2
++replace github.com/dgraph-io/badger/v2 v2.2007.4 => ../badger_2.2007.4
