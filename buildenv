@@ -51,11 +51,14 @@ zopen_config()
   git clone https://github.com/smallstep/certificates.git
   echo "Checking out smallstep/certificates"
 
+  git clone https://github.com/google/certificate-transparency-go.git
+  echo "Checking out google/certificate-transparency-go"
+
   cd caddy
   git apply ../patches/caddy_patch
 
   cd .. && echo ""
-  go work init ./caddy ./sys ./certificates
+  go work init ./caddy ./sys ./certificates ./certificate-transparency-go
   wharf ./caddy/cmd/caddy/...
 }
 
