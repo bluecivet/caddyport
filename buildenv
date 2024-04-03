@@ -1,6 +1,7 @@
 # Update bump details accordingly. Use bump check to confirm.
 # bump: caddy-version /CADDY_VERSION="(.*)"/ https://github.com/caddyserver/caddy.git|semver:*
 CADDY_VERSION="2.7.6" # Specify a stable release
+
 export ZOPEN_STABLE_TAG="v${CADDY_VERSION}"
 export ZOPEN_STABLE_URL="https://github.com/caddyserver/caddy.git"
 export ZOPEN_STABLE_DEPS="wharf git comp_go"
@@ -34,14 +35,14 @@ zopen_config()
   echo "Checking out dgraph-io/badger v1.6.2"
   cd badger_1.6.2
   git checkout tags/v1.6.2
-  git apply ../patches/badger_1-6-2.patch 
+  git apply ../patches/badger_1-6-2_patch 
 
   cd .. && echo ""
   git clone https://github.com/dgraph-io/badger.git badger_2.2007.4
   echo "Checking out dgraph-io/badger v2.2007.4"
   cd badger_2.2007.4
   git checkout tags/v2.2007.4
-  git apply ../patches/badger_2-2007-4.patch 
+  git apply ../patches/badger_2-2007-4_patch 
 
   cd .. && echo ""
   git clone https://github.com/golang/sys.git
@@ -51,16 +52,17 @@ zopen_config()
   echo "Checking out smallstep/certificates"
 
   cd caddy
-  git apply ../patches/caddy.patch
+  git apply ../patches/caddy_patch
 
   cd .. && echo ""
-  go work init caddy sys 
+  go work init ./caddy ./sys ./certificates
   wharf ./caddy/cmd/caddy/...
 }
 
 zopen_install()
 {
   cd caddy/cmd/caddy
+  echo "here-at-install $PWD"
   go install
 }
 
