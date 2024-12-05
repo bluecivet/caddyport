@@ -4,7 +4,7 @@ CADDY_VERSION="2.7.6" # Specify a stable release
 
 export ZOPEN_STABLE_TAG="v${CADDY_VERSION}"
 export ZOPEN_STABLE_URL="https://github.com/caddyserver/caddy.git"
-export ZOPEN_STABLE_DEPS="wharf git comp_go"
+export ZOPEN_STABLE_DEPS="wharf git check_go"
 export ZOPEN_BUILD_LINE="STABLE"
 export ZOPEN_CATEGORIES="networking"
 export ZOPEN_NAME="caddy"
